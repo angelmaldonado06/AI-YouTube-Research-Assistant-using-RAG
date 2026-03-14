@@ -7,19 +7,19 @@ AI-powered tool that summarizes YouTube videos and answers questions about their
 
 ## How it works
 ### Pipeline:
-YouTube URL
-    ↓
-Transcript Retrieval
-    ↓
-Text Chunking
-    ↓
-Embeddings
-    ↓
-FAISS Vector Search
-    ↓
-LLM (Llama 3.1)
-    ↓
-Summary / Question Answering
+          YouTube URL
+              ↓
+      Transcript Retrieval
+              ↓
+        Text Chunking
+              ↓
+         Embeddings
+              ↓
+      FAISS Vector Search
+              ↓
+        LLM (Llama 3.1)
+              ↓
+    Summary / Question Answering
 
 ### Key technologies used:
 
@@ -39,12 +39,12 @@ Summary / Question Answering
 
 ## Project Structure
 
-youtube-rag-assistant
-│
-├── app.py
-├── prompts.py
-├── rag_pipeline.py
-├── requirements.txt
-├── transcript.py
-├── README.md
-└── .gitignore
+        youtube-rag-assistant
+        │
+        ├── app.py
+        ├── prompts.py
+        ├── rag_pipeline.py
+        ├── requirements.txt
+        ├── transcript.py
+        ├── README.md
+        └── .gitignore
