@@ -24,12 +24,14 @@ AI-powered tool that summarizes YouTube videos and answers questions about their
               ↓
     Summary / Question Answering
 
+
 ### Key technologies used:
 - LangChain for prompt orchestration
 -  FAISS for retrieval
 -  Ollama for running models locally
 -  llama 3.1 for generation
 -  HugginFace embeddings for semantic search
+
 
 ## Installation
 
@@ -38,6 +40,7 @@ AI-powered tool that summarizes YouTube videos and answers questions about their
 - Install Ollama (https://ollama.com/)
 - Download the model (ollama pull llama3.1)
 - Run the application (ollama pull llama3.1)
+
 
 ## Project Structure
 
