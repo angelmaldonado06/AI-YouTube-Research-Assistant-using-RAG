@@ -1,11 +1,14 @@
 # AI YouTube Research Assistant using RAG
 AI-powered tool that summarizes YouTube videos and answers questions about their content using Retrieval-Augmented Generation (RAG).
 
+
 ## Features
 - Generates summaries of YouTube videos
 - Ask questions about the video and get answers with timestamps
 
+
 ## How it works
+
 ### Pipeline:
           YouTube URL
               ↓
@@ -29,6 +32,7 @@ AI-powered tool that summarizes YouTube videos and answers questions about their
 -  HugginFace embeddings for semantic search
 
 ## Installation
+
 - Clone the repository
 - Install Python dependencies (pip install -r requirements.txt)
 - Install Ollama (https://ollama.com/)
