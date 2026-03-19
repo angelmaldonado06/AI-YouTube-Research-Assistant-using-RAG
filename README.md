@@ -39,7 +39,8 @@ AI-powered tool that summarizes YouTube videos and answers questions about their
 - Install Python dependencies (pip install -r requirements.txt)
 - Install Ollama (https://ollama.com/)
 - Download the model (ollama pull llama3.1)
-- Run the application (ollama run llama3.1)
+- Run the model (ollama run llama3.1)
+- Run the application (python app.py)
 
 
 ## Project Structure
