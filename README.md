@@ -4,7 +4,8 @@ AI-powered tool that summarizes YouTube videos and answers questions about their
 
 ## Features
 - Generates summaries of YouTube videos
-- Ask questions about the video and get answers with timestamps
+- Answers questions about the video using transcript-based retrieval
+- Preserves transcript timestamps inside retrieved chunks
 
 
 ## How it works
@@ -27,20 +28,20 @@ AI-powered tool that summarizes YouTube videos and answers questions about their
 
 ### Key technologies used:
 - LangChain for prompt orchestration
--  FAISS for retrieval
--  Ollama for running models locally
--  llama 3.1 for generation
--  HugginFace embeddings for semantic search
+- FAISS for retrieval
+- Ollama for running models locally
+- Llama 3.1 for generation
+- Hugging Face embeddings for semantic search
 
 
 ## Installation
 
 - Clone the repository
-- Install Python dependencies (pip install -r requirements.txt)
-- Install Ollama (https://ollama.com/)
-- Download the model (ollama pull llama3.1)
-- Run the model (ollama run llama3.1)
-- Run the application (python app.py)
+- Install Python dependencies with `pip install -r requirements.txt`
+- Install Ollama from [ollama.com](https://ollama.com/)
+- Download the model with `ollama pull llama3.1`
+- Run the model with `ollama run llama3.1`
+- Start the app with `python app.py`
 
 
 ## Project Structure
