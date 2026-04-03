@@ -1,0 +1,14 @@
+[
+  {
+    "question": "What is the main topic of the video?",
+    "ground_truth": "Replace this with a concise reference answer grounded in the transcript."
+  },
+  {
+    "question": "What key takeaway does the speaker emphasize?",
+    "ground_truth": "Replace this with another short answer that appears clearly in the transcript."
+  },
+  {
+    "question": "Does the speaker mention any tools, examples, or next steps?",
+    "ground_truth": "Replace this with a fact-based answer from the video."
+  }
+]

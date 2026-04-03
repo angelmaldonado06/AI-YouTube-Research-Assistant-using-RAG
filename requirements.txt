@@ -1,9 +1,12 @@
 gradio
 youtube-transcript-api
 langchain
+langchain-classic
 langchain-community
 langchain-text-splitters
 langchain-huggingface
 langchain-ollama
 faiss-cpu
 sentence-transformers
+datasets
+ragas

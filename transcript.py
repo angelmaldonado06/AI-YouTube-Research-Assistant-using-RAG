@@ -3,8 +3,12 @@ import re
 
 
 def get_video_id(url):    
-    # Regex pattern to match YouTube video URLs
-    pattern = r'https:\/\/www\.youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})'
+    # Support common YouTube URL formats
+    pattern = (
+        r"(?:https?:\/\/)?(?:www\.)?"
+        r"(?:youtube\.com\/watch\?v=|youtu\.be\/)"
+        r"([a-zA-Z0-9_-]{11})"
+    )
     match = re.search(pattern, url)
     return match.group(1) if match else None
 
@@ -39,19 +43,37 @@ def seconds_to_hhmmss(seconds):
     return f"{hours:02d}:{minutes:02d}:{secs:02d}"
 
 
-def process(transcript):
-    # Initialize an empty string to hold the formatted transcript
+def normalize_transcript_entries(transcript):
+    normalized_entries = []
+
+    for entry in transcript:
+        text = entry.get("text") if isinstance(entry, dict) else getattr(entry, "text", None)
+        start = entry.get("start") if isinstance(entry, dict) else getattr(entry, "start", None)
+
+        if not text or start is None:
+            continue
+
+        normalized_entries.append(
+            {
+                "text": text.strip(),
+                "start_seconds": float(start),
+                "timestamp": seconds_to_hhmmss(float(start)),
+            }
+        )
+
+    return normalized_entries
+
+
+def format_transcript_entries(transcript_entries):
     txt = ""
-   
-    # Loop through each entry in the transcript
-    for i in transcript:
-        try:
-            # Append the text and its start time to the output string
-            hhmmss_time = seconds_to_hhmmss(i.start)
-            txt += f"Text: {i.text} Timestamp: {hhmmss_time}\n"
-        except KeyError:
-            # If there is an issue accessing 'text' or 'start', skip this entry
-            pass
-           
-    # Return the processed transcript as a single string
+
+    for entry in transcript_entries:
+        txt += f"Text: {entry['text']} Timestamp: {entry['timestamp']}\n"
+
     return txt
+
+
+def process(transcript):
+    # Keep backward compatibility with the original app while normalizing first.
+    normalized_entries = normalize_transcript_entries(transcript)
+    return format_transcript_entries(normalized_entries)

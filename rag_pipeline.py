@@ -2,65 +2,71 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_ollama import OllamaLLM
+from langchain_core.documents import Document
 
-from transcript import get_transcript, process
+from transcript import (
+    format_transcript_entries,
+    get_transcript,
+    normalize_transcript_entries,
+)
 
 
-def chunk_transcript(processed_transcript, chunk_size=800, chunk_overlap=100):
-    # Initialize the RecursiveCharacterTextSplitter with specified chunk size and overlap
+def build_transcript_documents(transcript_entries, chunk_size=800, chunk_overlap=100):
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size,
-        chunk_overlap=chunk_overlap
+        chunk_overlap=chunk_overlap,
     )
 
-    # Split the transcript into chunks
-    chunks = text_splitter.split_text(processed_transcript)
-    return chunks
+    documents = [
+        Document(
+            page_content=f"Text: {entry['text']} Timestamp: {entry['timestamp']}",
+            metadata={
+                "timestamp": entry["timestamp"],
+                "start_seconds": entry["start_seconds"],
+            },
+        )
+        for entry in transcript_entries
+    ]
+
+    return text_splitter.split_documents(documents)
 
 
 def create_embedding_model():
-
-    return HuggingFaceEmbeddings(
-        model_name="BAAI/bge-base-en-v1.5"
-    )
+    return HuggingFaceEmbeddings(model_name="BAAI/bge-base-en-v1.5")
 
 
 def create_llm():
-    llm = OllamaLLM(
-        model="llama3.1",
-        temperature=0.3
-    )
-
-    return llm
+    return OllamaLLM(model="llama3.1", temperature=0.3)
 
 
-def create_faiss_index(chunks, embedding_model):
+def create_faiss_index_from_documents(documents, embedding_model):
+    return FAISS.from_documents(documents, embedding_model)
 
-    return FAISS.from_texts(chunks, embedding_model)
+
+def retrieve_documents(query, faiss_index, k=4):
+    return faiss_index.similarity_search(query, k=k)
 
 
 def retrieve(query, faiss_index, k=4):
-
-    docs = faiss_index.similarity_search(query, k=k)
-    context = "\n\n".join(doc.page_content for doc in docs)
-
-    return context
+    docs = retrieve_documents(query, faiss_index, k=k)
+    return "\n\n".join(doc.page_content for doc in docs)
 
 
 def prepare_video(video_url):
-
     if not video_url:
         return "", None
 
     fetched_transcript = get_transcript(video_url)
-
-    if fetched_transcript:
-        processed_transcript = process(fetched_transcript)
-        chunked_transcript = chunk_transcript(processed_transcript)
-        embedding_model = create_embedding_model()
-        faiss_index = create_faiss_index(chunked_transcript, embedding_model)
-
-        return processed_transcript, faiss_index
-
-    else:
+    if not fetched_transcript:
         return "", None
+
+    transcript_entries = normalize_transcript_entries(fetched_transcript)
+    processed_transcript = format_transcript_entries(transcript_entries)
+    transcript_documents = build_transcript_documents(transcript_entries)
+    embedding_model = create_embedding_model()
+    faiss_index = create_faiss_index_from_documents(
+        transcript_documents,
+        embedding_model,
+    )
+
+    return processed_transcript, faiss_index
